@@ -1,3 +1,8 @@
+// Flip to true only when the site is ready to actually go live on its real
+// domain. While false, every page is sent as noindex/nofollow and
+// robots.txt disallows all crawlers — this is a staging/testing build.
+export const SITE_IS_LIVE = false;
+
 export const SITE = {
   name: 'Legwork',
   legalName: 'Legwork Co, LLC',

@@ -1,5 +1,5 @@
 ---
-import { SITE } from '../lib/site';
+import { SITE, SITE_IS_LIVE } from '../lib/site';
 
 interface Props {
   title: string;
@@ -29,12 +29,13 @@ const schemas = structuredData
     ? structuredData
     : [structuredData]
   : [];
+const shouldNoindex = noindex || !SITE_IS_LIVE;
 ---
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{shouldNoindex && <meta name="robots" content="noindex, nofollow" />}
 
 <meta property="og:type" content={type} />
 <meta property="og:title" content={fullTitle} />

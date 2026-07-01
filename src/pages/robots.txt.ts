@@ -1,4 +1,9 @@
-# Legwork — robots.txt
+import type { APIRoute } from 'astro';
+import { SITE, SITE_IS_LIVE } from '../lib/site';
+
+export const prerender = true;
+
+const LIVE_BODY = `# ${SITE.name} — robots.txt
 # Web development + SEO/GEO agency site: open to search engines by
 # default, and to AI answer engines by design (this is the whole point
 # of the AEO/GEO service line — we want to be crawlable and citable,
@@ -49,4 +54,18 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://www.legworkco.com/sitemap-index.xml
+Sitemap: ${SITE.url}/sitemap-index.xml
+`;
+
+const STAGING_BODY = `# ${SITE.name} — staging build, not yet live.
+# Every crawler is blocked and every page is sent as noindex until
+# SITE_IS_LIVE is flipped to true in src/lib/site.ts.
+User-agent: *
+Disallow: /
+`;
+
+export const GET: APIRoute = () => {
+  return new Response(SITE_IS_LIVE ? LIVE_BODY : STAGING_BODY, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+  });
+};
