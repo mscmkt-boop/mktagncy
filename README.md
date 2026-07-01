@@ -90,6 +90,10 @@ Run against the production build (`npm run build && npm run preview`) with `npx 
 
 LCP ~0.9s, CLS 0, TBT 0ms on the homepage locally — well inside the "good" Core Web Vitals thresholds. Re-run Lighthouse against the live production URL after deploy, since real-world network/CDN conditions will differ from local `preview`.
 
+## Staging status — site is currently blocked from indexing
+
+`SITE_IS_LIVE` in `src/lib/site.ts` is set to `false`. While it's false, every page ships `<meta name="robots" content="noindex, nofollow">` and `robots.txt` (`src/pages/robots.txt.ts`, a dynamic endpoint) disallows every crawler. This is intentional while the site is deployed for testing on a temporary/Hostinger domain and hasn't launched on its real domain yet. **Flip `SITE_IS_LIVE` to `true`, update `SITE.url`/`astro.config.mjs` to the real domain, rebuild, and redeploy once the site is actually ready to be found.**
+
 ## Known gaps / flagged for follow-up
 
 These are intentional placeholders, not bugs — flagging per the original brief's "flag anything you can't resolve automatically" instruction:
