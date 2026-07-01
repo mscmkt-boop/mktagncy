@@ -8,13 +8,17 @@ import Cta from '../components/Cta.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../lib/site';
 
-const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const allServices = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const pillars = [
+  { name: 'Web Development', services: allServices.filter((s) => s.data.pillar === 'Web Development') },
+  { name: 'SEO & AI Search Visibility', services: allServices.filter((s) => s.data.pillar === 'SEO & AI Search Visibility') }
+];
 const featuredStudies = (await getCollection('caseStudies'))
   .filter((s) => s.data.featured)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
 const description =
-  'Full-service SEO agency covering technical, on-page, off-page, local, content, and e-commerce SEO, plus AEO/GEO for AI search visibility. Built for marketing directors who want proof, not definitions.';
+  'Affordable website design and development plus full-service SEO and AI search visibility (AEO/GEO). We handle the site and the visibility so you can stay focused on your craft.';
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -37,19 +41,19 @@ const orgSchema = {
 };
 ---
 
-<BaseLayout title="SEO & AEO/GEO Agency" description={description} structuredData={orgSchema}>
+<BaseLayout title="Websites, SEO/GEO & Leads" description={description} structuredData={orgSchema}>
   <section class="border-b border-line bg-paper">
     <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[3fr_2fr] lg:items-center">
       <div>
         <h1 class="text-4xl font-semibold leading-tight text-ink sm:text-5xl">
-          SEO that shows up in traffic and revenue. AI search visibility that shows up in the answer.
+          A website that actually brings you business. Built affordably, found easily.
         </h1>
         <p class="mt-6 max-w-xl text-lg text-slate">
-          {SITE.name} runs full-service SEO programs — technical, on-page, content, local, e-commerce, and link building — with AEO/GEO built in as a differentiator, not sold as the whole strategy.
+          Websites shouldn't be a five-figure expense — they're a revenue channel and proof you're legitimate. {SITE.name} builds the site and handles the SEO/GEO work behind it, so you can stay focused on your craft while we take care of your visibility, your leads, and your conversions.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <a href="/contact" class="inline-flex items-center gap-2 rounded-md bg-signal-cta px-6 py-3 font-medium text-ink hover:bg-signal-bright">
-            Book a strategy call
+            Get a free site &amp; visibility review
             <Icon name="arrow-right" class="h-5 w-5" />
           </a>
           <a href="/case-studies" class="inline-flex items-center gap-2 rounded-md border border-line px-6 py-3 font-medium text-ink hover:border-signal">
@@ -60,16 +64,16 @@ const orgSchema = {
 
       <dl class="grid grid-cols-2 gap-4">
         <div class="rounded-lg border border-line bg-white p-5">
-          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. organic revenue lift</dt>
-          <dd class="mt-1 font-display text-3xl font-semibold text-signal">+62%</dd>
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. site launch time</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">3-4 wks</dd>
+        </div>
+        <div class="rounded-lg border border-line bg-white p-5">
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. increase in monthly leads</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">+87%</dd>
         </div>
         <div class="rounded-lg border border-line bg-white p-5">
           <dt class="text-xs font-medium uppercase tracking-wide text-slate">Sites moved to "good" CWV</dt>
           <dd class="mt-1 font-display text-3xl font-semibold text-signal">94%</dd>
-        </div>
-        <div class="rounded-lg border border-line bg-white p-5">
-          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. AI Overview share of answer</dt>
-          <dd class="mt-1 font-display text-3xl font-semibold text-signal">31%</dd>
         </div>
         <div class="rounded-lg border border-line bg-white p-5">
           <dt class="text-xs font-medium uppercase tracking-wide text-slate">Client retention (12mo)</dt>
@@ -81,31 +85,37 @@ const orgSchema = {
 
   <section aria-labelledby="services-heading" class="mx-auto max-w-6xl px-6 py-20">
     <div class="max-w-2xl">
-      <h2 id="services-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Everything a search strategy needs, under one roof.</h2>
+      <h2 id="services-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Two core services. Everything else supports them.</h2>
       <p class="mt-4 text-lg text-slate">
-        No single-channel shops here. We run technical, content, authority, and AI search visibility work together, because they compound — and fall apart — together.
+        A site that's built well but never found doesn't generate leads. A search strategy with nothing to point traffic at doesn't either. We do both, together, on purpose.
       </p>
     </div>
-    <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((service) => (
-        <li>
-          <ServiceCard
-            name={service.data.name}
-            shortDescription={service.data.shortDescription}
-            href={`/services/${service.id}`}
-            icon={service.data.icon}
-          />
-        </li>
-      ))}
-    </ul>
+
+    {pillars.map((pillar) => (
+      <div class="mt-12">
+        <h3 class="text-xl font-semibold text-ink">{pillar.name}</h3>
+        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {pillar.services.map((service) => (
+            <li>
+              <ServiceCard
+                name={service.data.name}
+                shortDescription={service.data.shortDescription}
+                href={`/services/${service.id}`}
+                icon={service.data.icon}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
   </section>
 
   <section aria-labelledby="proof-heading" class="border-y border-line bg-paper-dim">
     <div class="mx-auto max-w-6xl px-6 py-20">
       <h2 id="proof-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Proof, not adjectives.</h2>
       <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        <StatCard value="3 wks" label="From kickoff to launch" detail="Local service business, full site + on-page SEO" />
         <StatCard value="164%" label="Map pack impressions" detail="22-location retail client, 6 months" />
-        <StatCard value="4.8s -> 1.9s" label="Mobile LCP improvement" detail="On the highest-traffic template" />
         <StatCard value="0 -> 34%" label="AI Overview share of answer" detail="D2C e-commerce brand, 9 months" />
       </div>
     </div>
@@ -136,5 +146,8 @@ const orgSchema = {
     </section>
   )}
 
-  <Cta />
+  <Cta
+    heading="Your craft is the hard part. Let us handle the rest."
+    body="A free review of your current site (or a plan for your first one) and what it would take to turn it into a real source of leads."
+  />
 </BaseLayout>

@@ -2,6 +2,7 @@
 name: "Schema & Structured Data"
 shortDescription: "JSON-LD implementation that helps search engines and AI systems parse exactly what your pages mean."
 icon: "code-bracket"
+pillar: "SEO & AI Search Visibility"
 order: 9
 deliverables:
   - "Schema audit against current implementation and validation errors"

@@ -2,6 +2,7 @@
 name: "Off-Page SEO & Link Building"
 shortDescription: "Earned and built authority signals that move rankings without the manual-action risk of shortcuts."
 icon: "link"
+pillar: "SEO & AI Search Visibility"
 order: 3
 deliverables:
   - "Backlink profile audit and toxic link disavow review"

@@ -7,7 +7,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.sparklineseo.com',
+  site: 'https://www.legworkco.com',
   trailingSlash: 'never',
   output: 'static',
   vite: {

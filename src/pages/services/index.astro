@@ -6,15 +6,28 @@ import ServiceCard from '../../components/ServiceCard.astro';
 import Cta from '../../components/Cta.astro';
 import { SITE } from '../../lib/site';
 
-const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const allServices = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+const pillars = [
+  {
+    name: 'Web Development',
+    blurb: 'A fast, affordable site built to actually generate leads — plus the care plans to keep it that way.',
+    services: allServices.filter((s) => s.data.pillar === 'Web Development')
+  },
+  {
+    name: 'SEO & AI Search Visibility',
+    blurb: 'Every discipline that drives organic performance, from technical fundamentals to AI answer engines.',
+    services: allServices.filter((s) => s.data.pillar === 'SEO & AI Search Visibility')
+  }
+];
 
 const description =
-  'Full-service SEO across technical, on-page, off-page, local, content, e-commerce, and AI search visibility (AEO/GEO) — plus the analytics and structured data work that makes results measurable.';
+  'Affordable website design and development plus full-service SEO and AI search visibility (AEO/GEO) — the two things that turn a website into a lead-generation channel.';
 
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  itemListElement: services.map((service, index) => ({
+  itemListElement: allServices.map((service, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     url: new URL(`/services/${service.id}`, SITE.url).toString(),
@@ -23,30 +36,36 @@ const itemListSchema = {
 };
 ---
 
-<BaseLayout title="SEO Services" description={description} structuredData={itemListSchema}>
+<BaseLayout title="Services" description={description} structuredData={itemListSchema}>
   <Breadcrumbs items={[{ label: 'Services', href: '/services' }]} />
 
   <section class="mx-auto max-w-6xl px-6 py-16">
-    <h1 class="max-w-3xl text-4xl font-semibold text-ink sm:text-5xl">Full-service SEO, with AI search visibility built in.</h1>
+    <h1 class="max-w-3xl text-4xl font-semibold text-ink sm:text-5xl">Two things that actually move revenue: a website worth finding, and getting found.</h1>
     <p class="mt-6 max-w-2xl text-lg text-slate">
-      We cover every discipline that drives organic performance — not just the AI search angle. Each service below is delivered on its own or as part of an integrated program, depending on where your biggest gaps are.
+      Web development and SEO/GEO are our two core services — everything else below is a discipline within one of them. You focus on your craft. We handle the site, the visibility, and the leads it's supposed to produce.
     </p>
   </section>
 
-  <section class="mx-auto max-w-6xl px-6 pb-20">
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((service) => (
-        <li>
-          <ServiceCard
-            name={service.data.name}
-            shortDescription={service.data.shortDescription}
-            href={`/services/${service.id}`}
-            icon={service.data.icon}
-          />
-        </li>
-      ))}
-    </ul>
-  </section>
+  {pillars.map((pillar) => (
+    <section aria-labelledby={`pillar-${pillar.name}`} class="mx-auto max-w-6xl px-6 pb-20">
+      <div class="max-w-2xl border-b border-line pb-6">
+        <h2 id={`pillar-${pillar.name}`} class="text-2xl font-semibold text-ink sm:text-3xl">{pillar.name}</h2>
+        <p class="mt-2 text-slate">{pillar.blurb}</p>
+      </div>
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {pillar.services.map((service) => (
+          <li>
+            <ServiceCard
+              name={service.data.name}
+              shortDescription={service.data.shortDescription}
+              href={`/services/${service.id}`}
+              icon={service.data.icon}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 
   <Cta />
 </BaseLayout>

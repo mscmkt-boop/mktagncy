@@ -14,7 +14,7 @@ const blog = defineCollection({
       description: z.string().max(160),
       heroImage: image().optional(),
       heroImageAlt: z.string().optional(),
-      author: z.string().default('Sparkline Editorial Team'),
+      author: z.string().default('Legwork Editorial Team'),
       publishDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.enum([
@@ -23,7 +23,8 @@ const blog = defineCollection({
         'AEO/GEO',
         'Local SEO',
         'Analytics',
-        'Link Building'
+        'Link Building',
+        'Web Development'
       ]),
       tags: z.array(z.string()).default([]),
       faq: z.array(faqEntry).default([]),
@@ -79,8 +80,11 @@ const services = defineCollection({
       'chart-bar',
       'code-bracket',
       'bolt',
-      'magnifying-glass'
+      'magnifying-glass',
+      'browser',
+      'refresh'
     ]),
+    pillar: z.enum(['Web Development', 'SEO & AI Search Visibility']),
     order: z.number(),
     deliverables: z.array(z.string()).min(1),
     relatedCaseStudies: z.array(z.string()).default([]),

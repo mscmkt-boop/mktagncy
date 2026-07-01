@@ -2,6 +2,7 @@
 name: "SEO Audits"
 shortDescription: "A comprehensive diagnostic across technical, on-page, content, and authority factors, with a prioritized fix list."
 icon: "magnifying-glass"
+pillar: "SEO & AI Search Visibility"
 order: 11
 deliverables:
   - "Full technical crawl and log file analysis"

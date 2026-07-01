@@ -1,20 +1,20 @@
 export const SITE = {
-  name: 'Sparkline',
-  legalName: 'Sparkline SEO, LLC',
-  tagline: 'SEO and AI search visibility that shows up in the numbers, not just the rankings.',
-  url: 'https://www.sparklineseo.com',
-  email: 'hello@sparklineseo.com',
+  name: 'Legwork',
+  legalName: 'Legwork Co, LLC',
+  tagline: 'Affordable websites, search visibility, and leads — so you can stay focused on your craft.',
+  url: 'https://www.legworkco.com',
+  email: 'hello@legworkco.com',
   phone: '+1 (555) 019-2044',
   addressLocality: 'Austin',
   addressRegion: 'TX',
-  bookingUrl: 'https://cal.com/sparklineseo/intro-call',
+  bookingUrl: 'https://cal.com/legworkco/intro-call',
   // Placeholder — point this at a real form backend (Formspree, Web3Forms, etc.)
   // before launch. Left blank intentionally so the form degrades to a mailto
   // fallback instead of silently failing.
   contactFormEndpoint: '',
   social: {
-    linkedin: 'https://www.linkedin.com/company/sparklineseo',
-    x: 'https://x.com/sparklineseo'
+    linkedin: 'https://www.linkedin.com/company/legworkco',
+    x: 'https://x.com/legworkco'
   },
   founded: '2019'
 } as const;

@@ -2,6 +2,7 @@
 name: "Analytics & Reporting (GA4/GSC/GTM)"
 shortDescription: "Clean measurement infrastructure and reporting tied to revenue, not vanity traffic metrics."
 icon: "chart-bar"
+pillar: "SEO & AI Search Visibility"
 order: 8
 deliverables:
   - "GA4 implementation audit and event/conversion configuration"

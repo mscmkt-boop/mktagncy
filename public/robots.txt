@@ -1,7 +1,8 @@
-# Sparkline — robots.txt
-# Full-service SEO site: open to search engines by default, and to AI
-# answer engines by design (this is the whole point of the AEO/GEO
-# service line — we want to be crawlable and citable, not blocked).
+# Legwork — robots.txt
+# Web development + SEO/GEO agency site: open to search engines by
+# default, and to AI answer engines by design (this is the whole point
+# of the AEO/GEO service line — we want to be crawlable and citable,
+# not blocked).
 
 User-agent: *
 Allow: /
@@ -48,4 +49,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://www.sparklineseo.com/sitemap-index.xml
+Sitemap: https://www.legworkco.com/sitemap-index.xml

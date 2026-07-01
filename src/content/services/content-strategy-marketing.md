@@ -2,6 +2,7 @@
 name: "Content Strategy & Content Marketing"
 shortDescription: "Editorial planning and production built around topical authority, not a keyword-per-post treadmill."
 icon: "pencil"
+pillar: "SEO & AI Search Visibility"
 order: 5
 deliverables:
   - "Topical map and content cluster planning"

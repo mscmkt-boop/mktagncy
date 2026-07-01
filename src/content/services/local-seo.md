@@ -2,6 +2,7 @@
 name: "Local SEO"
 shortDescription: "Google Business Profile, citations, and localized content for businesses competing on map pack and 'near me' visibility."
 icon: "map-pin"
+pillar: "SEO & AI Search Visibility"
 order: 4
 deliverables:
   - "Google Business Profile optimization and ongoing management"
@@ -11,6 +12,7 @@ deliverables:
   - "Local link building and community-based authority signals"
 relatedCaseStudies:
   - "multi-location-retailer-local-search"
+  - "solo-law-practice-affordable-website-leads"
 faq:
   - question: "How is local SEO different for multi-location businesses?"
     answer: "Each location needs its own optimized presence — a dedicated landing page, its own Google Business Profile, and location-specific citations and reviews — without those pages becoming thin duplicates of each other. That balance is the core challenge we solve for franchise and multi-location clients."

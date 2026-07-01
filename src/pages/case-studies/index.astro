@@ -11,7 +11,7 @@ const allStudies = (await getCollection('caseStudies')).sort(
 const industries = ['All', ...new Set(allStudies.map((s) => s.data.industry))];
 
 const description =
-  'Results from SEO and AEO/GEO engagements, with structured metrics on traffic growth, Core Web Vitals improvements, and ranking gains.';
+  'Results from website builds and SEO/AEO-GEO engagements, with structured metrics on leads, traffic growth, Core Web Vitals improvements, and ranking gains.';
 ---
 
 <BaseLayout title="Case Studies & Results" description={description}>

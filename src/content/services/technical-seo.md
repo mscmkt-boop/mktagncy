@@ -2,6 +2,7 @@
 name: "Technical SEO"
 shortDescription: "Crawlability, indexation, and site architecture work that removes the ceiling on everything else you publish."
 icon: "wrench"
+pillar: "SEO & AI Search Visibility"
 order: 1
 deliverables:
   - "Full crawl audit (log files + Screaming Frog/Sitebulb) with prioritized fix list"

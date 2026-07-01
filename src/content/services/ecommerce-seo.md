@@ -2,6 +2,7 @@
 name: "E-commerce SEO"
 shortDescription: "Category and product page optimization, faceted navigation, and structured data built for catalogs at scale."
 icon: "shopping-cart"
+pillar: "SEO & AI Search Visibility"
 order: 6
 deliverables:
   - "Category and product page template optimization"

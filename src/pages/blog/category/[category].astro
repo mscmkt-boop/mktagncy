@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { SITE } from '../../../lib/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -26,7 +27,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month:
 const path = Astro.url.pathname;
 ---
 
-<BaseLayout title={`${category} articles`} description={`Blog posts about ${category} from ${'Sparkline'}.`}>
+<BaseLayout title={`${category} articles`} description={`Blog posts about ${category} from ${SITE.name}.`}>
   <Breadcrumbs items={[{ label: 'Blog', href: '/blog' }, { label: category, href: path }]} />
 
   <section class="mx-auto max-w-6xl px-6 py-16">

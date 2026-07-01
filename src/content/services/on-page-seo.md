@@ -2,6 +2,7 @@
 name: "On-Page SEO"
 shortDescription: "Title tags, headings, internal linking, and page-level optimization built for rankings and for AI answer extraction."
 icon: "document"
+pillar: "SEO & AI Search Visibility"
 order: 2
 deliverables:
   - "Page-level keyword and intent mapping"

@@ -52,7 +52,8 @@ const serviceSchema = {
     <span class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-paper-dim text-signal">
       <Icon name={service.data.icon} class="h-7 w-7" />
     </span>
-    <h1 class="mt-4 text-4xl font-semibold text-ink sm:text-5xl">{service.data.name}</h1>
+    <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-signal">{service.data.pillar}</p>
+    <h1 class="mt-1 text-4xl font-semibold text-ink sm:text-5xl">{service.data.name}</h1>
     <p class="mt-4 text-lg text-slate">{service.data.shortDescription}</p>
   </header>
 

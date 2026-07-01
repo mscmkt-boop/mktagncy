@@ -2,6 +2,7 @@
 name: "Core Web Vitals & Site Performance"
 shortDescription: "LCP, CLS, and INP work that improves both ranking signals and actual conversion rate."
 icon: "bolt"
+pillar: "SEO & AI Search Visibility"
 order: 10
 deliverables:
   - "Core Web Vitals audit (field and lab data) across key templates"

@@ -2,6 +2,7 @@
 name: "AEO/GEO (AI Search Visibility)"
 shortDescription: "Answer Engine Optimization and Generative Engine Optimization to earn citations inside AI Overviews, ChatGPT, Perplexity, and Gemini."
 icon: "sparkles"
+pillar: "SEO & AI Search Visibility"
 order: 7
 deliverables:
   - "AI Overview and answer engine visibility audit across target queries"
