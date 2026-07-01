@@ -1,0 +1,80 @@
+---
+import { NAV_LINKS, SITE } from '../lib/site';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="border-b border-line bg-paper">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center gap-2 font-display text-xl font-semibold text-ink">
+      <svg class="h-7 w-7 text-signal" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <polyline points="2,17 8,12 12,15 22,5" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="22" cy="5" r="2" fill="currentColor" />
+      </svg>
+      <span>{SITE.name}</span>
+    </a>
+
+    <button
+      type="button"
+      id="nav-toggle"
+      class="inline-flex items-center rounded-md border border-line p-2 text-ink md:hidden"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+    >
+      <span class="sr-only">Toggle menu</span>
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 font-medium">
+        {NAV_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[
+                'text-sm text-ink transition-colors hover:text-signal',
+                { 'text-signal': isActive(link.href) }
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <nav id="primary-nav" aria-label="Primary mobile" class="hidden border-t border-line px-6 pb-4 md:hidden">
+    <ul class="flex flex-col gap-1 pt-2">
+      {NAV_LINKS.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            class="block rounded px-2 py-2 text-ink hover:bg-paper-dim"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('primary-nav');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+</script>

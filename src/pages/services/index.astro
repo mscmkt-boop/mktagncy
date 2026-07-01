@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import Cta from '../../components/Cta.astro';
+import { SITE } from '../../lib/site';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+const description =
+  'Full-service SEO across technical, on-page, off-page, local, content, e-commerce, and AI search visibility (AEO/GEO) — plus the analytics and structured data work that makes results measurable.';
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: services.map((service, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: new URL(`/services/${service.id}`, SITE.url).toString(),
+    name: service.data.name
+  }))
+};
+---
+
+<BaseLayout title="SEO Services" description={description} structuredData={itemListSchema}>
+  <Breadcrumbs items={[{ label: 'Services', href: '/services' }]} />
+
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <h1 class="max-w-3xl text-4xl font-semibold text-ink sm:text-5xl">Full-service SEO, with AI search visibility built in.</h1>
+    <p class="mt-6 max-w-2xl text-lg text-slate">
+      We cover every discipline that drives organic performance — not just the AI search angle. Each service below is delivered on its own or as part of an integrated program, depending on where your biggest gaps are.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => (
+        <li>
+          <ServiceCard
+            name={service.data.name}
+            shortDescription={service.data.shortDescription}
+            href={`/services/${service.id}`}
+            icon={service.data.icon}
+          />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <Cta />
+</BaseLayout>

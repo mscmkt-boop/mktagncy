@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+const categories = [...new Set(posts.map((p) => p.data.category))];
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const description =
+  'SEO and AI search visibility notes: technical fixes, content structure, local SEO, and analytics practices that hold up in practice.';
+---
+
+<BaseLayout title="Blog" description={description}>
+  <Breadcrumbs items={[{ label: 'Blog', href: '/blog' }]} />
+
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <h1 class="max-w-3xl text-4xl font-semibold text-ink sm:text-5xl">Notes on SEO and AI search visibility.</h1>
+    <p class="mt-6 max-w-2xl text-lg text-slate">
+      Practical write-ups from engagements, not evergreen listicles. New posts get added as the work produces something worth documenting.
+    </p>
+
+    <nav aria-label="Categories" class="mt-8 flex flex-wrap gap-2">
+      {categories.map((category) => (
+        <a
+          href={`/blog/category/${category.toLowerCase().replace(/[\s/]+/g, '-')}`}
+          class="rounded-full border border-line px-4 py-2 text-sm font-medium text-ink hover:border-signal"
+        >
+          {category}
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <li>
+          <a
+            href={`/blog/${post.id}`}
+            class="flex h-full flex-col gap-3 rounded-lg border border-line bg-white p-6 transition-colors hover:border-signal"
+          >
+            <p class="text-xs font-semibold uppercase tracking-wide text-signal">{post.data.category}</p>
+            <h2 class="text-lg font-semibold text-ink">{post.data.title}</h2>
+            <p class="text-sm text-slate">{post.data.description}</p>
+            <p class="mt-auto text-xs text-slate">
+              <time datetime={post.data.publishDate.toISOString()}>{dateFormatter.format(post.data.publishDate)}</time>
+              &middot; {post.data.author}
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

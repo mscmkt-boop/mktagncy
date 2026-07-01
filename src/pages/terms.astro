@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../lib/site';
+
+const description = `Terms of Service for ${SITE.name}.`;
+const lastUpdated = new Date('2026-01-01');
+---
+
+<BaseLayout title="Terms of Service" description={description}>
+  <Breadcrumbs items={[{ label: 'Terms of Service', href: '/terms' }]} />
+
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="text-4xl font-semibold text-ink">Terms of Service</h1>
+    <p class="mt-2 text-sm text-slate">
+      Last updated: <time datetime={lastUpdated.toISOString()}>{lastUpdated.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+    </p>
+
+    <div class="prose prose-slate mt-8 max-w-none prose-headings:font-display prose-headings:text-ink prose-a:text-signal">
+      <h2>Use of this site</h2>
+      <p>
+        This website and its content are provided by {SITE.legalName} for informational purposes. By using this site, you agree not to misuse it, attempt unauthorized access to any systems, or reproduce content without permission.
+      </p>
+
+      <h2>Services engagements</h2>
+      <p>
+        Information on this site describes our services generally. Specific scope, deliverables, pricing, and timelines for any engagement are governed by a separate signed agreement between {SITE.legalName} and the client, which takes precedence over anything described here.
+      </p>
+
+      <h2>No guaranteed results</h2>
+      <p>
+        SEO and AEO/GEO outcomes depend on factors outside our control, including search engine and AI platform algorithm changes, competitive activity, and a client's own implementation timeline. We do not guarantee specific rankings, traffic, or citation outcomes.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        Content on this site, including copy, design, and code, is the property of {SITE.legalName} unless otherwise noted, and may not be reproduced without permission.
+      </p>
+
+      <h2>Limitation of liability</h2>
+      <p>
+        {SITE.legalName} is not liable for indirect, incidental, or consequential damages arising from use of this site or reliance on its content.
+      </p>
+
+      <h2>Changes to these terms</h2>
+      <p>
+        We may update these terms from time to time. Continued use of the site after changes constitutes acceptance of the updated terms.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

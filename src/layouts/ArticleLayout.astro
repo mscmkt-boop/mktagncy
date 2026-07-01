@@ -1,0 +1,74 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import Cta from '../components/Cta.astro';
+import { SITE } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  author: string;
+  publishDate: Date;
+  updatedDate?: Date;
+  category: string;
+  tags: string[];
+  faq: { question: string; answer: string }[];
+}
+
+const { title, description, author, publishDate, updatedDate, category, tags, faq } = Astro.props;
+const path = Astro.url.pathname;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: publishDate.toISOString(),
+  dateModified: (updatedDate ?? publishDate).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: author
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url
+  },
+  mainEntityOfPage: new URL(path, SITE.url).toString()
+};
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={title} description={description} type="article" structuredData={articleSchema}>
+  <Breadcrumbs items={[{ label: 'Blog', href: '/blog' }, { label: title, href: path }]} />
+  <article class="mx-auto max-w-3xl px-6 py-14">
+    <header>
+      <p class="text-sm font-semibold uppercase tracking-wide text-signal">{category}</p>
+      <h1 class="mt-2 text-4xl font-semibold text-ink">{title}</h1>
+      <p class="mt-4 text-sm text-slate">
+        By {author} &middot; <time datetime={publishDate.toISOString()}>{dateFormatter.format(publishDate)}</time>
+        {updatedDate && (
+          <>
+            &middot; Updated <time datetime={updatedDate.toISOString()}>{dateFormatter.format(updatedDate)}</time>
+          </>
+        )}
+      </p>
+      {tags.length > 0 && (
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <li class="rounded-full bg-paper-dim px-3 py-1 text-xs font-medium text-slate">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    <div class="prose prose-slate mt-10 max-w-none prose-headings:font-display prose-headings:text-ink prose-a:text-signal">
+      <slot />
+    </div>
+  </article>
+
+  <FaqBlock items={faq} />
+  <Cta />
+</BaseLayout>

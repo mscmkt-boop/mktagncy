@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+
+const description = 'Book a strategy call or send details about your SEO and AI search visibility needs.';
+---
+
+<BaseLayout title="Contact" description={description}>
+  <Breadcrumbs items={[{ label: 'Contact', href: '/contact' }]} />
+
+  <section class="mx-auto grid max-w-6xl gap-12 px-6 py-16 lg:grid-cols-[3fr_2fr]">
+    <div>
+      <h1 class="text-4xl font-semibold text-ink sm:text-5xl">Tell us where you're stuck.</h1>
+      <p class="mt-4 max-w-xl text-lg text-slate">
+        Give us a sense of the problem and the budget range, and we'll follow up with next steps — usually within one business day.
+      </p>
+
+      <form
+        id="contact-form"
+        class="mt-10 space-y-6"
+        data-endpoint={SITE.contactFormEndpoint}
+        data-fallback-email={SITE.email}
+        novalidate
+      >
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label for="name" class="block text-sm font-medium text-ink">Name <span aria-hidden="true">*</span></label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              autocomplete="name"
+              class="mt-2 w-full rounded-md border border-line bg-white px-4 py-2.5 text-ink focus:border-signal"
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-ink">Email <span aria-hidden="true">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="mt-2 w-full rounded-md border border-line bg-white px-4 py-2.5 text-ink focus:border-signal"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="company" class="block text-sm font-medium text-ink">Company</label>
+          <input
+            type="text"
+            id="company"
+            name="company"
+            autocomplete="organization"
+            class="mt-2 w-full rounded-md border border-line bg-white px-4 py-2.5 text-ink focus:border-signal"
+          />
+        </div>
+
+        <div>
+          <label for="budget" class="block text-sm font-medium text-ink">Budget / timeline</label>
+          <select
+            id="budget"
+            name="budget"
+            class="mt-2 w-full rounded-md border border-line bg-white px-4 py-2.5 text-ink focus:border-signal"
+          >
+            <option value="">Select a range</option>
+            <option value="under-2k-mo">Under $2k/month</option>
+            <option value="2k-5k-mo">$2k-$5k/month</option>
+            <option value="5k-10k-mo">$5k-$10k/month</option>
+            <option value="10k-plus-mo">$10k+/month</option>
+            <option value="project-based">Project-based / one-time audit</option>
+            <option value="not-sure">Not sure yet</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-sm font-medium text-ink">What's going on? <span aria-hidden="true">*</span></label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows="5"
+            class="mt-2 w-full rounded-md border border-line bg-white px-4 py-2.5 text-ink focus:border-signal"
+          ></textarea>
+        </div>
+
+        <p id="form-status" role="status" aria-live="polite" class="hidden text-sm"></p>
+
+        <button
+          type="submit"
+          class="inline-flex items-center gap-2 rounded-md bg-signal-cta px-6 py-3 font-medium text-ink hover:bg-signal-bright"
+        >
+          Send message
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </button>
+      </form>
+    </div>
+
+    <aside class="h-fit rounded-lg border border-line bg-white p-6">
+      <h2 class="text-lg font-semibold text-ink">Prefer to just book time?</h2>
+      <p class="mt-2 text-sm text-slate">Skip the form and grab a slot directly on the calendar.</p>
+      <a
+        href={SITE.bookingUrl}
+        class="mt-4 inline-flex items-center gap-2 rounded-md border border-line px-5 py-2.5 font-medium text-ink hover:border-signal"
+      >
+        Book a strategy call
+        <Icon name="arrow-right" class="h-4 w-4" />
+      </a>
+
+      <dl class="mt-8 space-y-4 border-t border-line pt-6 text-sm">
+        <div>
+          <dt class="font-medium text-ink">Email</dt>
+          <dd><a href={`mailto:${SITE.email}`} class="text-signal hover:underline">{SITE.email}</a></dd>
+        </div>
+        <div>
+          <dt class="font-medium text-ink">Phone</dt>
+          <dd><a href={`tel:${SITE.phone.replace(/[^+\d]/g, '')}`} class="text-signal hover:underline">{SITE.phone}</a></dd>
+        </div>
+        <div>
+          <dt class="font-medium text-ink">Based in</dt>
+          <dd>{SITE.addressLocality}, {SITE.addressRegion}</dd>
+        </div>
+      </dl>
+    </aside>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!status) return;
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const endpoint = form.dataset.endpoint;
+    const fallbackEmail = form.dataset.fallbackEmail ?? '';
+    const formData = new FormData(form);
+
+    if (!endpoint) {
+      const subject = encodeURIComponent(`New inquiry from ${formData.get('name')}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.get('name')}\nEmail: ${formData.get('email')}\nCompany: ${formData.get('company')}\nBudget: ${formData.get('budget')}\n\n${formData.get('message')}`
+      );
+      window.location.href = `mailto:${fallbackEmail}?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    status.classList.remove('hidden', 'text-coral');
+    status.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData
+      });
+
+      if (response.ok) {
+        status.textContent = "Thanks — we'll be in touch within one business day.";
+        form.reset();
+      } else {
+        throw new Error('Non-200 response');
+      }
+    } catch {
+      status.classList.add('text-coral');
+      status.textContent = `Something went wrong. Email us directly at ${fallbackEmail}.`;
+    }
+  });
+</script>

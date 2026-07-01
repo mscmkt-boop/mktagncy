@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../lib/site';
+
+const description = `Privacy Policy for ${SITE.name}, covering what data we collect and how it's used.`;
+const lastUpdated = new Date('2026-01-01');
+---
+
+<BaseLayout title="Privacy Policy" description={description}>
+  <Breadcrumbs items={[{ label: 'Privacy Policy', href: '/privacy-policy' }]} />
+
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="text-4xl font-semibold text-ink">Privacy Policy</h1>
+    <p class="mt-2 text-sm text-slate">
+      Last updated: <time datetime={lastUpdated.toISOString()}>{lastUpdated.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+    </p>
+
+    <div class="prose prose-slate mt-8 max-w-none prose-headings:font-display prose-headings:text-ink prose-a:text-signal">
+      <h2>What we collect</h2>
+      <p>
+        When you submit our contact form or book a call, we collect the information you provide directly: name, email address, company, and any details you share about your project. We also use analytics tools (Google Analytics 4) to understand how visitors use this site, which relies on cookies and similar technologies.
+      </p>
+
+      <h2>How we use it</h2>
+      <p>
+        Contact and booking information is used solely to respond to your inquiry and, if you become a client, to deliver our services. We do not sell personal information to third parties.
+      </p>
+
+      <h2>Analytics and cookies</h2>
+      <p>
+        This site uses Google Analytics 4 to measure traffic and behavior in aggregate. You can opt out of Google Analytics tracking using your browser settings or available opt-out extensions.
+      </p>
+
+      <h2>Third-party services</h2>
+      <p>
+        Our contact form and booking tools are processed by third-party providers (such as a form backend and calendar scheduling service). Those providers have their own privacy policies governing the data they process on our behalf.
+      </p>
+
+      <h2>Data retention</h2>
+      <p>
+        We retain contact and client information for as long as necessary to provide services and comply with legal obligations, after which it is deleted or anonymized.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You may request access to, correction of, or deletion of your personal information at any time by emailing <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const categories = [...new Set(posts.map((p) => p.data.category))];
+
+  return categories.map((category) => {
+    const slug = category.toLowerCase().replace(/[\s/]+/g, '-');
+    return {
+      params: { category: slug },
+      props: {
+        category,
+        posts: posts
+          .filter((p) => p.data.category === category)
+          .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+      }
+    };
+  });
+}
+
+const { category, posts } = Astro.props;
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const path = Astro.url.pathname;
+---
+
+<BaseLayout title={`${category} articles`} description={`Blog posts about ${category} from ${'Sparkline'}.`}>
+  <Breadcrumbs items={[{ label: 'Blog', href: '/blog' }, { label: category, href: path }]} />
+
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <h1 class="text-4xl font-semibold text-ink sm:text-5xl">{category}</h1>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <li>
+          <a
+            href={`/blog/${post.id}`}
+            class="flex h-full flex-col gap-3 rounded-lg border border-line bg-white p-6 transition-colors hover:border-signal"
+          >
+            <h2 class="text-lg font-semibold text-ink">{post.data.title}</h2>
+            <p class="text-sm text-slate">{post.data.description}</p>
+            <p class="mt-auto text-xs text-slate">
+              <time datetime={post.data.publishDate.toISOString()}>{dateFormatter.format(post.data.publishDate)}</time>
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

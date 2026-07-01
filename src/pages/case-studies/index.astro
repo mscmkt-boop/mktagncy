@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+
+const allStudies = (await getCollection('caseStudies')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+const industries = ['All', ...new Set(allStudies.map((s) => s.data.industry))];
+
+const description =
+  'Results from SEO and AEO/GEO engagements, with structured metrics on traffic growth, Core Web Vitals improvements, and ranking gains.';
+---
+
+<BaseLayout title="Case Studies & Results" description={description}>
+  <Breadcrumbs items={[{ label: 'Case Studies', href: '/case-studies' }]} />
+
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <h1 class="max-w-3xl text-4xl font-semibold text-ink sm:text-5xl">Results, with the numbers attached.</h1>
+    <p class="mt-6 max-w-2xl text-lg text-slate">
+      Every engagement here is measured in structured metrics, not adjectives: traffic growth, Core Web Vitals movement, ranking gains, and — where relevant — AI answer engine citation share.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20">
+    <div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter case studies by industry">
+      {industries.map((industry, index) => (
+        <button
+          type="button"
+          class="filter-btn rounded-full border border-line px-4 py-2 text-sm font-medium text-ink transition-colors data-[active=true]:border-signal data-[active=true]:bg-signal-cta data-[active=true]:text-ink"
+          data-industry={industry}
+          data-active={index === 0}
+        >
+          {industry}
+        </button>
+      ))}
+    </div>
+
+    <ul id="case-study-list" class="grid gap-6 sm:grid-cols-2">
+      {allStudies.map((study) => (
+        <li class="case-study-item" data-industry={study.data.industry}>
+          <a
+            href={`/case-studies/${study.id}`}
+            class="flex h-full flex-col gap-4 rounded-lg border border-line bg-white p-6 transition-colors hover:border-signal"
+          >
+            <p class="text-xs font-semibold uppercase tracking-wide text-signal">{study.data.industry}</p>
+            <h2 class="text-xl font-semibold text-ink">{study.data.clientName}</h2>
+            <p class="text-sm text-slate">{study.data.summary}</p>
+            <dl class="mt-auto grid grid-cols-2 gap-3 border-t border-line pt-4">
+              {study.data.metrics.slice(0, 2).map((metric) => (
+                <div>
+                  <dt class="text-xs text-slate">{metric.label}</dt>
+                  <dd class="font-display text-lg font-semibold text-signal">{metric.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <p id="no-results-message" class="hidden py-12 text-center text-slate">No case studies match that filter yet.</p>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const items = document.querySelectorAll<HTMLLIElement>('.case-study-item');
+  const noResults = document.getElementById('no-results-message');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      buttons.forEach((b) => b.setAttribute('data-active', 'false'));
+      button.setAttribute('data-active', 'true');
+
+      const industry = button.dataset.industry;
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const matches = industry === 'All' || item.dataset.industry === industry;
+        item.classList.toggle('hidden', !matches);
+        if (matches) visibleCount += 1;
+      });
+
+      noResults?.classList.toggle('hidden', visibleCount !== 0);
+    });
+  });
+</script>

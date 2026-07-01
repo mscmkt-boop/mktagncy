@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import StatCard from '../components/StatCard.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import Cta from '../components/Cta.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../lib/site';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const featuredStudies = (await getCollection('caseStudies'))
+  .filter((s) => s.data.featured)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const description =
+  'Full-service SEO agency covering technical, on-page, off-page, local, content, and e-commerce SEO, plus AEO/GEO for AI search visibility. Built for marketing directors who want proof, not definitions.';
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.name,
+  legalName: SITE.legalName,
+  url: SITE.url,
+  email: SITE.email,
+  telephone: SITE.phone,
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.addressLocality,
+    addressRegion: SITE.addressRegion,
+    addressCountry: 'US'
+  },
+  sameAs: [SITE.social.linkedin, SITE.social.x],
+  areaServed: 'US',
+  foundingDate: SITE.founded
+};
+---
+
+<BaseLayout title="SEO & AEO/GEO Agency" description={description} structuredData={orgSchema}>
+  <section class="border-b border-line bg-paper">
+    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[3fr_2fr] lg:items-center">
+      <div>
+        <h1 class="text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+          SEO that shows up in traffic and revenue. AI search visibility that shows up in the answer.
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-slate">
+          {SITE.name} runs full-service SEO programs — technical, on-page, content, local, e-commerce, and link building — with AEO/GEO built in as a differentiator, not sold as the whole strategy.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="/contact" class="inline-flex items-center gap-2 rounded-md bg-signal-cta px-6 py-3 font-medium text-ink hover:bg-signal-bright">
+            Book a strategy call
+            <Icon name="arrow-right" class="h-5 w-5" />
+          </a>
+          <a href="/case-studies" class="inline-flex items-center gap-2 rounded-md border border-line px-6 py-3 font-medium text-ink hover:border-signal">
+            See the results
+          </a>
+        </div>
+      </div>
+
+      <dl class="grid grid-cols-2 gap-4">
+        <div class="rounded-lg border border-line bg-white p-5">
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. organic revenue lift</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">+62%</dd>
+        </div>
+        <div class="rounded-lg border border-line bg-white p-5">
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Sites moved to "good" CWV</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">94%</dd>
+        </div>
+        <div class="rounded-lg border border-line bg-white p-5">
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Avg. AI Overview share of answer</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">31%</dd>
+        </div>
+        <div class="rounded-lg border border-line bg-white p-5">
+          <dt class="text-xs font-medium uppercase tracking-wide text-slate">Client retention (12mo)</dt>
+          <dd class="mt-1 font-display text-3xl font-semibold text-signal">89%</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section aria-labelledby="services-heading" class="mx-auto max-w-6xl px-6 py-20">
+    <div class="max-w-2xl">
+      <h2 id="services-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Everything a search strategy needs, under one roof.</h2>
+      <p class="mt-4 text-lg text-slate">
+        No single-channel shops here. We run technical, content, authority, and AI search visibility work together, because they compound — and fall apart — together.
+      </p>
+    </div>
+    <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => (
+        <li>
+          <ServiceCard
+            name={service.data.name}
+            shortDescription={service.data.shortDescription}
+            href={`/services/${service.id}`}
+            icon={service.data.icon}
+          />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section aria-labelledby="proof-heading" class="border-y border-line bg-paper-dim">
+    <div class="mx-auto max-w-6xl px-6 py-20">
+      <h2 id="proof-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Proof, not adjectives.</h2>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        <StatCard value="164%" label="Map pack impressions" detail="22-location retail client, 6 months" />
+        <StatCard value="4.8s -> 1.9s" label="Mobile LCP improvement" detail="On the highest-traffic template" />
+        <StatCard value="0 -> 34%" label="AI Overview share of answer" detail="D2C e-commerce brand, 9 months" />
+      </div>
+    </div>
+  </section>
+
+  {featuredStudies.length > 0 && (
+    <section aria-labelledby="case-studies-heading" class="mx-auto max-w-6xl px-6 py-20">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <h2 id="case-studies-heading" class="text-3xl font-semibold text-ink sm:text-4xl">Recent results</h2>
+        <a href="/case-studies" class="inline-flex items-center gap-1 font-medium text-signal hover:underline">
+          View all case studies
+          <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      </div>
+      <ul class="mt-8 space-y-4">
+        {featuredStudies.map((study) => (
+          <li>
+            <CaseStudyCard
+              clientLabel={study.data.clientName}
+              industry={study.data.industry}
+              summary={study.data.summary}
+              href={`/case-studies/${study.id}`}
+              headlineMetric={{ value: study.data.metrics[0].value, label: study.data.metrics[0].label }}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <Cta />
+</BaseLayout>

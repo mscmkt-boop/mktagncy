@@ -1,0 +1,59 @@
+---
+interface Props {
+  name:
+    | 'wrench'
+    | 'document'
+    | 'link'
+    | 'map-pin'
+    | 'pencil'
+    | 'shopping-cart'
+    | 'sparkles'
+    | 'chart-bar'
+    | 'code-bracket'
+    | 'bolt'
+    | 'magnifying-glass'
+    | 'arrow-right'
+    | 'check'
+    | 'star';
+  class?: string;
+}
+
+const { name, class: className = 'h-6 w-6' } = Astro.props;
+
+const paths: Record<Props['name'], string> = {
+  wrench:
+    'M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3-3-2.7 2.7 2 2 2.7-2.7',
+  document:
+    'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM14 3v5h5M9 13h6M9 17h6M9 9h2',
+  link: 'M9 15l6-6M8.5 12.5 6 15a3.5 3.5 0 0 0 5 5l3-3M15.5 11.5 18 9a3.5 3.5 0 0 0-5-5l-3 3',
+  'map-pin':
+    'M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21ZM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
+  pencil:
+    'M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3ZM14 6l4 4',
+  'shopping-cart':
+    'M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.2a2 2 0 0 0 2-1.6L20 8H6M9 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+  sparkles:
+    'M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3ZM5 15l.8 2.2L8 18l-2.2.8L5 21l-.8-2.2L2 18l2.2-.8L5 15ZM19 14l.7 1.8L21.5 16.5l-1.8.7L19 19l-.7-1.8-1.8-.7 1.8-.7L19 14Z',
+  'chart-bar': 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+  'code-bracket': 'M9 18l-6-6 6-6M15 6l6 6-6 6',
+  bolt: 'M13 2 4 14h6l-1 8 9-12h-6l1-8Z',
+  'magnifying-glass': 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.35-4.35',
+  'arrow-right': 'M5 12h14M13 6l6 6-6 6',
+  check: 'M5 13l4 4L19 7',
+  star: 'M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 17l-5.6 3.1 1.4-6.3L3 9.5l6.4-.6L12 3Z'
+};
+---
+
+<svg
+  class={className}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={paths[name]}></path>
+</svg>

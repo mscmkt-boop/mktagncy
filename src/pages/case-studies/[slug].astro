@@ -1,0 +1,77 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import StatCard from '../../components/StatCard.astro';
+import Cta from '../../components/Cta.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies');
+  return studies.map((study) => ({
+    params: { slug: study.id },
+    props: { study }
+  }));
+}
+
+const { study } = Astro.props;
+const { Content } = await render(study);
+const path = `/case-studies/${study.id}`;
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={study.data.clientName} description={study.data.summary}>
+  <Breadcrumbs items={[{ label: 'Case Studies', href: '/case-studies' }, { label: study.data.clientName, href: path }]} />
+
+  <header class="mx-auto max-w-4xl px-6 py-14">
+    <p class="text-sm font-semibold uppercase tracking-wide text-signal">{study.data.industry}</p>
+    <h1 class="mt-2 text-4xl font-semibold text-ink sm:text-5xl">{study.data.clientName}</h1>
+    <p class="mt-4 text-lg text-slate">{study.data.summary}</p>
+    <p class="mt-2 text-sm text-slate">
+      Published <time datetime={study.data.publishDate.toISOString()}>{dateFormatter.format(study.data.publishDate)}</time>
+    </p>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {study.data.services.map((service) => (
+        <li class="rounded-full bg-paper-dim px-3 py-1 text-xs font-medium text-slate">{service}</li>
+      ))}
+    </ul>
+  </header>
+
+  <section aria-labelledby="results-heading" class="mx-auto max-w-4xl px-6 pb-16">
+    <h2 id="results-heading" class="text-2xl font-semibold text-ink">Results</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+      {study.data.metrics.map((metric) => (
+        <StatCard value={metric.value} label={metric.label} detail={metric.detail} />
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto grid max-w-4xl gap-10 px-6 pb-16 sm:grid-cols-2">
+    <div>
+      <h2 class="text-xl font-semibold text-ink">The challenge</h2>
+      <p class="mt-3 text-slate">{study.data.challenge}</p>
+    </div>
+    <div>
+      <h2 class="text-xl font-semibold text-ink">The approach</h2>
+      <p class="mt-3 text-slate">{study.data.approach}</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 pb-16">
+    <div class="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-a:text-signal">
+      <Content />
+    </div>
+  </section>
+
+  {study.data.testimonial && (
+    <section class="mx-auto max-w-4xl px-6 pb-16">
+      <blockquote class="border-l-4 border-signal pl-6 text-xl font-display italic text-ink">
+        &ldquo;{study.data.testimonial.quote}&rdquo;
+      </blockquote>
+      <p class="mt-3 text-sm text-slate">
+        {study.data.testimonial.author}, {study.data.testimonial.role}
+      </p>
+    </section>
+  )}
+
+  <Cta />
+</BaseLayout>

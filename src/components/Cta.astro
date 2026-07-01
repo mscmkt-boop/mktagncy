@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+}
+
+const {
+  heading = 'Ready to see what a real SEO program looks like?',
+  body = 'Get an audit of where you stand today across traditional search and AI answer engines, and a straight answer on what it would take to move the numbers.',
+  primaryLabel = 'Book a strategy call',
+  primaryHref = '/contact'
+} = Astro.props;
+---
+
+<section class="bg-ink">
+  <div class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-16 sm:flex-row sm:items-center sm:justify-between">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-semibold text-paper">{heading}</h2>
+      <p class="mt-3 text-base text-line">{body}</p>
+    </div>
+    <a
+      href={primaryHref}
+      class="inline-flex shrink-0 items-center gap-2 rounded-md bg-signal-cta px-6 py-3 font-medium text-ink transition-colors hover:bg-signal-bright"
+    >
+      {primaryLabel}
+      <Icon name="arrow-right" class="h-5 w-5" />
+    </a>
+  </div>
+</section>

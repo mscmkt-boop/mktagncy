@@ -1,0 +1,31 @@
+---
+title: "Core Web Vitals: What Actually Moves LCP and INP"
+description: "A practical look at the fixes that consistently move Largest Contentful Paint and Interaction to Next Paint, versus the ones that rarely matter."
+author: "Sparkline Editorial Team"
+publishDate: 2026-01-26
+category: "Technical SEO"
+tags: ["Core Web Vitals", "site performance", "LCP", "INP"]
+faq: []
+---
+
+Largest Contentful Paint (LCP) and Interaction to Next Paint (INP) are two of the three Core Web Vitals, and they're the two most commonly failed on real-world sites. Most of the guidance published about fixing them is generic. In practice, a small number of causes account for most failures.
+
+## What usually breaks LCP
+
+The largest contentful element on most pages is a hero image or a heading rendered after a web font loads. The fixes that move the needle, in order of typical impact:
+
+1. Serve the hero image in a modern format (WebP or AVIF) at the actual display size, not a full-resolution original scaled down by CSS
+2. Preload the LCP image instead of letting the browser discover it late in the page load
+3. Eliminate render-blocking resources — particularly third-party scripts injected before the main content
+
+## What usually breaks INP
+
+INP problems are almost always JavaScript-related: long tasks blocking the main thread when a user clicks, taps, or types. The most common culprits are:
+
+- Third-party scripts (analytics, chat widgets, ad tech) running expensive work on load or on interaction
+- Large client-side JavaScript bundles that aren't code-split
+- Event handlers doing synchronous work that should be deferred or broken into smaller tasks
+
+## Why this matters beyond rankings
+
+Core Web Vitals are a modest, tie-breaking ranking signal. Their bigger effect is on conversion rate: a page that feels slow or unresponsive loses visitors regardless of how well it's optimized otherwise. See our [Core Web Vitals & Site Performance service](/services/core-web-vitals-performance) for how we approach this at the template level rather than page by page.

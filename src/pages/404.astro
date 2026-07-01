@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Page not found" description="The page you're looking for doesn't exist." noindex>
+  <section class="mx-auto flex max-w-2xl flex-col items-start px-6 py-24">
+    <p class="font-display text-6xl font-semibold text-signal">404</p>
+    <h1 class="mt-4 text-3xl font-semibold text-ink">We couldn't find that page.</h1>
+    <p class="mt-4 text-lg text-slate">
+      The page may have moved or the link might be out of date. Try the homepage, or head straight to our services or blog.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a href="/" class="inline-flex items-center gap-2 rounded-md bg-signal-cta px-6 py-3 font-medium text-ink hover:bg-signal-bright">
+        Back to homepage
+        <Icon name="arrow-right" class="h-5 w-5" />
+      </a>
+      <a href="/services" class="inline-flex items-center gap-2 rounded-md border border-line px-6 py-3 font-medium text-ink hover:border-signal">
+        Browse services
+      </a>
+    </div>
+  </section>
+</BaseLayout>

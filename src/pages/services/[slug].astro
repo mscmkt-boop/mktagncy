@@ -1,0 +1,98 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
+import Cta from '../../components/Cta.astro';
+import Icon from '../../components/Icon.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import { SITE } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service }
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+const path = `/services/${service.id}`;
+
+const relatedCaseStudies = await Promise.all(
+  service.data.relatedCaseStudies.map((slug) => getEntry('caseStudies', slug))
+);
+const validCaseStudies = relatedCaseStudies.filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: service.data.name,
+  name: service.data.name,
+  description: service.data.shortDescription,
+  provider: {
+    '@type': 'ProfessionalService',
+    name: SITE.name,
+    url: SITE.url
+  },
+  areaServed: 'US',
+  url: new URL(path, SITE.url).toString()
+};
+---
+
+<BaseLayout
+  title={service.data.name}
+  description={service.data.shortDescription}
+  structuredData={serviceSchema}
+>
+  <Breadcrumbs items={[{ label: 'Services', href: '/services' }, { label: service.data.name, href: path }]} />
+
+  <header class="mx-auto max-w-4xl px-6 py-14">
+    <span class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-paper-dim text-signal">
+      <Icon name={service.data.icon} class="h-7 w-7" />
+    </span>
+    <h1 class="mt-4 text-4xl font-semibold text-ink sm:text-5xl">{service.data.name}</h1>
+    <p class="mt-4 text-lg text-slate">{service.data.shortDescription}</p>
+  </header>
+
+  <section class="mx-auto grid max-w-4xl gap-10 px-6 pb-16 lg:grid-cols-[2fr_1fr]">
+    <div class="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-a:text-signal">
+      <Content />
+    </div>
+
+    <aside aria-labelledby="deliverables-heading" class="h-fit rounded-lg border border-line bg-white p-6">
+      <h2 id="deliverables-heading" class="text-sm font-semibold uppercase tracking-wide text-ink">Key deliverables</h2>
+      <ul class="mt-4 space-y-3">
+        {service.data.deliverables.map((item) => (
+          <li class="flex items-start gap-2 text-sm text-slate">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-signal" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </section>
+
+  {validCaseStudies.length > 0 && (
+    <section aria-labelledby="related-results-heading" class="mx-auto max-w-4xl px-6 pb-16">
+      <h2 id="related-results-heading" class="text-2xl font-semibold text-ink">Related results</h2>
+      <ul class="mt-6 space-y-4">
+        {validCaseStudies.map((study) => (
+          <li>
+            <CaseStudyCard
+              clientLabel={study.data.clientName}
+              industry={study.data.industry}
+              summary={study.data.summary}
+              href={`/case-studies/${study.id}`}
+              headlineMetric={{ value: study.data.metrics[0].value, label: study.data.metrics[0].label }}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <FaqBlock items={service.data.faq} />
+  <Cta />
+</BaseLayout>

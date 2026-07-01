@@ -1,0 +1,28 @@
+---
+interface Props {
+  clientLabel: string;
+  industry: string;
+  summary: string;
+  href: string;
+  headlineMetric?: { value: string; label: string };
+}
+
+const { clientLabel, industry, summary, href, headlineMetric } = Astro.props;
+---
+
+<a
+  href={href}
+  class="flex flex-col justify-between gap-6 rounded-lg border border-line bg-white p-6 transition-colors hover:border-signal sm:flex-row sm:items-center"
+>
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-wide text-signal">{industry}</p>
+    <h3 class="mt-1 text-lg font-semibold text-ink">{clientLabel}</h3>
+    <p class="mt-2 max-w-xl text-sm text-slate">{summary}</p>
+  </div>
+  {headlineMetric && (
+    <div class="shrink-0 rounded-md bg-paper-dim px-5 py-3 text-center">
+      <p class="font-display text-2xl font-semibold text-signal">{headlineMetric.value}</p>
+      <p class="text-xs text-slate">{headlineMetric.label}</p>
+    </div>
+  )}
+</a>
