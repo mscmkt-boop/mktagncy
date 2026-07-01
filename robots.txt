@@ -1,0 +1,5 @@
+# Legwork — staging build, not yet live.
+# Every crawler is blocked and every page is sent as noindex until
+# SITE_IS_LIVE is flipped to true in src/lib/site.ts.
+User-agent: *
+Disallow: /
