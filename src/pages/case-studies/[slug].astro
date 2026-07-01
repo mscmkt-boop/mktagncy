@@ -24,7 +24,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month:
 
   <header class="mx-auto max-w-4xl px-6 py-14">
     <p class="text-sm font-semibold uppercase tracking-wide text-signal">{study.data.industry}</p>
-    <h1 class="mt-2 text-4xl font-semibold text-ink sm:text-5xl">{study.data.clientName}</h1>
+    <h1 class="mt-2 text-4xl font-semibold text-ink sm:text-5xl">{study.data.services[0]} Case Study: {study.data.clientName}</h1>
     <p class="mt-4 text-lg text-slate">{study.data.summary}</p>
     <p class="mt-2 text-sm text-slate">
       Published <time datetime={study.data.publishDate.toISOString()}>{dateFormatter.format(study.data.publishDate)}</time>
